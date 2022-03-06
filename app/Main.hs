@@ -57,10 +57,13 @@ generationToStr (c:cs) start max
     | start > 0 = generationToStr cs (start - 1) max
     | otherwise = (cellToChar c):(generationToStr cs 0 (max - 1))
 
+getStartPos :: Generation -> Conf -> Int
+getStartPos gen conf = (quot ((getSize gen) - (getWindow conf)) 2) - (getMove conf)
+
 printGen :: Generation -> Conf -> IO ()
 printGen gen conf =
     if isGenToBePrint gen conf
-    then putStrLn (generationToStr (getCells gen) (quot ((getSize gen) - (getWindow conf)) 2) (getWindow conf))
+    then putStrLn (generationToStr (getCells gen) (getStartPos gen conf) (getWindow conf))
     else return ()
 
 hasReachEnd :: Int -> Int -> Maybe Int -> Bool
