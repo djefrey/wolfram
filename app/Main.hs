@@ -29,6 +29,30 @@ simulate rule (l:[]) pos = [(rule l False False)]
 simulate rule (l:c:[]) pos = (rule l c False):(simulate rule [c]  (pos + 1))
 simulate rule (l:c:r:xs) pos = (rule l c r):(simulate rule ([c,r] ++ xs) (pos + 1))
 
+getRuleFct :: Conf -> (Bool -> Bool -> Bool -> Bool)
+getRuleFct conf = case (getRule conf) of
+    Nothing -> rule0
+    (Just rule) -> getRuleFromValue rule
+
+getRuleFromValue :: Int -> (Bool -> Bool -> Bool -> Bool)
+getRuleFromValue 30 = rule30
+getRuleFromValue 90 = rule90
+getRuleFromValue 110 = rule110
+getRuleFromValue _ = rule0
+
+rule0 :: Bool -> Bool -> Bool -> Bool
+rule0 _ _ _ = False
+
+rule30 :: Bool -> Bool -> Bool -> Bool
+rule30 False False False = False
+rule30 True  False False = True
+rule30 False True  False = True
+rule30 False False True  = True
+rule30 True  True  False = False
+rule30 True  False True  = False
+rule30 False True  True  = True
+rule30 True  True  True  = False
+
 rule90 :: Bool -> Bool -> Bool -> Bool
 rule90 False False False = False
 rule90 True  False False = True
@@ -38,6 +62,16 @@ rule90 True  True  False = True
 rule90 True  False True  = False
 rule90 False True  True  = True
 rule90 True  True  True  = False
+
+rule110 :: Bool -> Bool -> Bool -> Bool
+rule110 False False False = False
+rule110 True  False False = False
+rule110 False True  False = True
+rule110 False False True  = True
+rule110 True  True  False = True
+rule110 True  False True  = True
+rule110 False True  True  = True
+rule110 True  True  True  = False
 
 cellToChar :: Bool -> Char
 cellToChar True = '*'
@@ -75,7 +109,7 @@ run gen conf =
     if not (hasReachEnd (getId gen) (getStart conf) (getLines conf))
     then
         printGen gen conf
-        >> run (nextGen gen rule90) conf
+        >> run (nextGen gen (getRuleFct conf)) conf
     else
         return ()
 
