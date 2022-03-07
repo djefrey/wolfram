@@ -49,6 +49,7 @@ getOpts conf ("--move":str:strs) = let mVal = readMaybe str :: Maybe Int in case
     Nothing -> Nothing
     (Just val) -> getOpts conf{move=val} strs
 getOpts conf [] = (Just conf)
+getOpts _ _ = Nothing
 
 getRule, getLines :: Conf -> Maybe Int
 getStart, getWindow, getMove :: Conf -> Int
