@@ -84,7 +84,7 @@ isGenToBePrint (Generation id _ _) conf = let mayLines = getLines conf in
         (Just lines) -> (id >= (getStart conf)) && (id <= ((getStart conf) + lines))
 
 generationToStr :: [Bool] -> Int -> Int -> String
-generationToStr _ _ 0 = " "
+generationToStr _ _ 0 = ""
 generationToStr [] _ max = ' ':(generationToStr [] 0 (max - 1))
 generationToStr (c:cs) start max
     | start < 0 = ' ':generationToStr (c:cs) (start + 1) (max - 1)
@@ -106,7 +106,7 @@ getStartPos gen conf = (quot ((getSize gen) - (getWindow conf)) 2) - (getMove co
 printGen :: Generation -> Conf -> IO ()
 printGen gen conf =
     if isGenToBePrint gen conf
-    then putStrLn (removeFinalSpaces (generationToStr (getCells gen) (getStartPos gen conf) (getWindow conf)))
+    then putStrLn (generationToStr (getCells gen) (getStartPos gen conf) (getWindow conf))
     else return ()
 
 hasReachEnd :: Int -> Int -> Maybe Int -> Bool
