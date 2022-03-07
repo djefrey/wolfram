@@ -14,7 +14,10 @@ $(NAME): $(PATH_CMD)
 	stack build
 	cp "$(PATH_CMD)"/bin/wolfram-exe $(NAME)
 
-fclean:
+clean:
+	stack clean
+
+fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
