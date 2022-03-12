@@ -17,11 +17,11 @@ getSize :: Generation -> Int
 getSize (Generation _ _ size) = size
 
 startGeneration :: Generation
-startGeneration = (Generation 0 [True] 1)
+startGeneration = Generation 0 [True] 1
 
 nextGen :: Generation -> (Bool -> Bool -> Bool -> Bool) -> Generation
-nextGen (Generation id cells size) rule = (Generation (id + 1)
-    (simulate rule ([False] ++ cells ++ [False]) 0) (size + 2))
+nextGen (Generation id cells size) rule = Generation (id + 1)
+    (simulate rule ([False] ++ cells ++ [False]) 0) (size + 2)
 
 simulate :: (Bool -> Bool -> Bool -> Bool) -> [Bool] -> Int -> [Bool]
 simulate rule (c:r:xs) 0 = (rule False c r):(simulate rule ([c,r] ++ xs) 1)
@@ -30,6 +30,7 @@ simulate rule (l:[]) pos = [(rule l False False)]
 simulate rule (l:c:[]) pos = (rule l c False):(simulate rule [c]  (pos + 1))
 simulate rule (l:c:r:xs) pos =
     (rule l c r):(simulate rule ([c,r] ++ xs) (pos + 1))
+simulate _ [] _ = []
 
 getRuleFct :: Conf -> (Bool -> Bool -> Bool -> Bool)
 getRuleFct conf = case (getRule conf) of
@@ -128,7 +129,7 @@ run gen conf =
         return ()
 
 wolfram :: Conf -> IO ()
-wolfram conf = run startGeneration conf
+wolfram = run startGeneration
 
 main :: IO ()
 main = do
