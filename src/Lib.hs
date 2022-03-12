@@ -22,7 +22,7 @@ defaultConf :: Conf
 defaultConf = Conf Nothing 0 Nothing 80 0
 
 invalidRule :: Maybe Int -> Bool
-invalidRule Nothing  = False
+invalidRule Nothing  = True
 invalidRule (Just rule) = not ((rule == 30) || (rule == 90) || (rule == 110))
 
 invalidValues :: Conf -> Bool
@@ -38,7 +38,7 @@ startApp (Just conf) fct =
         then exitWith (ExitFailure 84)
         else fct conf
 
-setRuleFromStr, setStartFromStr :: Conf -> String -> [String] -> Maybe Conf
+setRuleFromStr, setStartFromStr :: Conf  -> String -> [String] -> Maybe Conf
 setLinesFromStr, setWindowFromStr :: Conf -> String -> [String] -> Maybe Conf
 setMoveFromStr :: Conf -> String -> [String] -> Maybe Conf
 setRuleFromStr conf str strs =
