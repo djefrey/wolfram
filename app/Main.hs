@@ -95,18 +95,9 @@ generationToStr (c:cs) start max
     | start > 0 = generationToStr cs (start - 1) max
     | otherwise = (cellToChar c):(generationToStr cs 0 (max - 1))
 
-removeFinalSpaces :: String -> String
-removeFinalSpaces [] = []
-removeFinalSpaces (' ':xs) =
-    let str = removeFinalSpaces xs
-    in case str of
-        [] -> []
-        _ -> ' ':str
-removeFinalSpaces (x:xs) = x:(removeFinalSpaces xs)
-
 getStartPos :: Generation -> Conf -> Int
 getStartPos gen conf =
-    (quot ((getSize gen) - (getWindow conf)) 2) - (getMove conf)
+    (div ((getSize gen) - (getWindow conf)) 2) - (getMove conf)
 
 printGen :: Generation -> Conf -> IO ()
 printGen gen conf =
