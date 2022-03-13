@@ -38,25 +38,31 @@ startApp (Just conf) fct =
         then exitWith (ExitFailure 84)
         else fct conf
 
-setRuleFromStr, setStartFromStr :: Conf  -> String -> [String] -> Maybe Conf
-setLinesFromStr, setWindowFromStr :: Conf -> String -> [String] -> Maybe Conf
-setMoveFromStr :: Conf -> String -> [String] -> Maybe Conf
+setRuleFromStr :: Conf  -> String -> [String] -> Maybe Conf
 setRuleFromStr conf str strs =
     let mVal = readMaybe str :: Maybe Int in case mVal of
         Nothing -> Nothing
         (Just val) -> getOpts conf{rule=(Just val)} strs
+
+setStartFromStr :: Conf  -> String -> [String] -> Maybe Conf
 setStartFromStr conf str strs =
     let mVal = readMaybe str :: Maybe Int in case mVal of
         Nothing -> Nothing
         (Just val) -> getOpts conf{start=val} strs
+
+setLinesFromStr :: Conf -> String -> [String] -> Maybe Conf
 setLinesFromStr conf str strs =
     let mVal = readMaybe str :: Maybe Int in case mVal of
         Nothing -> Nothing
         (Just val) -> getOpts conf{line=(Just val)} strs
+
+setWindowFromStr :: Conf -> String -> [String] -> Maybe Conf
 setWindowFromStr conf str strs =
     let mVal = readMaybe str :: Maybe Int in case mVal of
         Nothing -> Nothing
         (Just val) -> getOpts conf{window=val} strs
+
+setMoveFromStr :: Conf -> String -> [String] -> Maybe Conf
 setMoveFromStr conf str strs =
     let mVal = readMaybe str :: Maybe Int in case mVal of
         Nothing -> Nothing
@@ -71,12 +77,19 @@ getOpts conf ("--move":str:strs) = setMoveFromStr conf str strs
 getOpts conf [] = (Just conf)
 getOpts _ _ = Nothing
 
-getRule, getLines :: Conf -> Maybe Int
-getStart, getWindow, getMove :: Conf -> Int
+getRule :: Conf -> Maybe Int
 getRule (Conf rule _ _ _ _) = rule
+
+getStart :: Conf -> Int
 getStart (Conf _ start _ _ _) = start
+
+getLines :: Conf -> Maybe Int
 getLines (Conf _ _ lines _ _) = lines
+
+getWindow :: Conf -> Int
 getWindow (Conf _ _ _ window _) = window
+
+getMove :: Conf -> Int
 getMove (Conf _ _ _ _ move) = move
 
 substring :: String -> Int -> Int -> String

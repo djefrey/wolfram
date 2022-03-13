@@ -103,7 +103,8 @@ printGen :: Generation -> Conf -> IO ()
 printGen gen conf =
     if isGenToBePrint gen conf
     then putStrLn
-        (generationToStr (getCells gen) (getStartPos gen conf) (getWindow conf))
+        (generationToStr (getCells gen)
+        (getStartPos gen conf) (getWindow conf))
     else return ()
 
 hasReachEnd :: Int -> Int -> Maybe Int -> Bool
